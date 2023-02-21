@@ -3,7 +3,7 @@ const router = express.Router();
 const List = require("./../models/List.model");
 const Note = require("./../models/Note.model");
 
-router.post("/lists", (req, res) => {
+router.post("/", (req, res) => {
   const { title, description } = req.body;
   const owner = req.session.currentUser;
 
@@ -12,7 +12,13 @@ router.post("/lists", (req, res) => {
     .catch((error) => console.log(error));
 });
 
-router.get("/lists/:listId", (req, res) => {
+router.get("/", (req, res) => {
+  List.find({ owner: req.session.currentUser._id }).populate('lists')
+    .then((lists) => res.json({ lists }))
+    .catch((error) => console.log(error));
+});
+
+router.get("/:listId", (req, res) => {
   const owner = req.session.currentUser._id
 
   List.findOne({ _id: req.params.listId, owner })
@@ -20,6 +26,6 @@ router.get("/lists/:listId", (req, res) => {
     .catch((error) => console.log(error));
 });
 
-router.use("/lists/:listId", require("./note.routes"))
+router.use("/:listId/notes", require("./note.routes"))
 
 module.exports = router;

@@ -3,7 +3,7 @@ const List = require("../models/List.model");
 const router = express.Router();
 const Note = require("./../models/note.model");
 
-router.post("/notes", (req, res) => {
+router.post("/", (req, res) => {
   const { title, content, isUrgent, dueDate } = req.body
   const { listId } = req.params
 
@@ -15,13 +15,13 @@ router.post("/notes", (req, res) => {
     .catch((error) => console.log(error));
 });
 
-router.get("/notes", (req, res) => {
+router.get("/", (req, res) => {
   List.find({ owner: req.session.currentUser._id }).populate('notes')
     .then((notes) => res.json({ data: notes }))
     .catch((error) => console.log(error));
 });
 
-router.get("/notes/:noteId", (req, res) => {
+router.get("/:noteId", (req, res) => {
   List.findOne({ owner: req.session.currentUser._id, notes: req.params.noteId })
     .then(list => {
       if (!list) {
@@ -34,7 +34,7 @@ router.get("/notes/:noteId", (req, res) => {
     .catch((error) => console.log(error));
 });
 
-router.post("/notes/:noteId", (req, res) => {
+router.post("/:noteId", (req, res) => {
   List.findOne({ owner: req.session.currentUser._id, notes: req.params.noteId })
     .then(list => {
       if (!list) {

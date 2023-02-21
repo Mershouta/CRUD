@@ -1,32 +1,54 @@
 const express = require("express");
+const List = require("../models/List.model");
 const router = express.Router();
 const Note = require("./../models/note.model");
 
 router.post("/notes", (req, res) => {
-    Note.create(req.body)
-      .then((note) => res.json({ data: note }))
-      .catch((error) => console.log(error));
-  });
+  const { title, content, isUrgent, dueDate } = req.body
+  const { listId } = req.params
 
-  router.get("/notes", (req, res) => {
-    Note.find()
-      .then((notes) => res.json({ data: notes }))
-      .catch((error) => console.log(error));
-  });
+  Note.create({ title, content, isUrgent, dueDate })
+    .then((note) => {
+      List.findByIdAndUpdate(listId, { $push: { notes: note._id } })
+      res.json({ note })
+    })
+    .catch((error) => console.log(error));
+});
 
-  router.get("/notes/:noteId", (req, res) => {
-    Note.findOne({ _id: req.params.noteId })
-      .then((note) => res.json({ data: note }))
-      .catch((error) => console.log(error));
-  });
-  
-  router.post("/notes/:noteId", (req, res) => {
-    Note.findOneAndUpdate(
-      { _id: req.params.noteId },
-      req.body,
-      { new: true }
-    )
-      .then((note) => res.json({ data: note }))
-      .catch((error) => console.log(error));
-  });
-  module.exports = router;
+router.get("/notes", (req, res) => {
+  List.find({ owner: req.session.currentUser._id }).populate('notes')
+    .then((notes) => res.json({ data: notes }))
+    .catch((error) => console.log(error));
+});
+
+router.get("/notes/:noteId", (req, res) => {
+  List.findOne({ owner: req.session.currentUser._id, notes: req.params.noteId })
+    .then(list => {
+      if (!list) {
+        return res.status(404).json({ message: 'No note found' })
+      }
+
+      return Note.findById(req.params.noteId)
+    })
+    .then((note) => res.json({ note }))
+    .catch((error) => console.log(error));
+});
+
+router.post("/notes/:noteId", (req, res) => {
+  List.findOne({ owner: req.session.currentUser._id, notes: req.params.noteId })
+    .then(list => {
+      if (!list) {
+        return res.status(404).json({ message: 'No note found' })
+      }
+
+      return Note.findOneAndUpdate(
+        { _id: req.params.noteId },
+        req.body,
+        { new: true }
+      )
+    })
+    .then((note) => res.json({ note }))
+    .catch((error) => console.log(error));
+
+});
+module.exports = router;

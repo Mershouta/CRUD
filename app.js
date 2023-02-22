@@ -24,22 +24,27 @@ const projectName = "CRUD";
 app.locals.appTitle = `${capitalize(projectName)} created with IronLauncher`;
 
 // 👇 Start handling routes here
-const indexRoutes = require("./routes/index.routes");
-app.use("/", indexRoutes);
-
+// const indexRoutes = require("./routes/index.routes");
+app.set('view engine', 'hbs')
+// app.use("/", indexRoutes);
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
 const listRoutes = require('./routes/list.routes');
 const noteRoutes = require('./routes/note.routes');
 
+app.use((req, res, next) => {
+    if (req.session.currentUser) {
+        return next()
+    }
+    res.redirect('/auth/login')
+})
+
 app.use('/', listRoutes);
-app.use('/', noteRoutes);
+// app.use('/', noteRoutes);
 
 
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
-});
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 

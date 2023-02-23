@@ -24,23 +24,25 @@ const projectName = "CRUD";
 app.locals.appTitle = `${capitalize(projectName)} created with IronLauncher`;
 
 // 👇 Start handling routes here
-// const indexRoutes = require("./routes/index.routes");
+const indexRoutes = require("./routes/index.routes");
 app.set('view engine', 'hbs')
-// app.use("/", indexRoutes);
+
+app.use("/", indexRoutes);
+
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
 const listRoutes = require('./routes/list.routes');
 const noteRoutes = require('./routes/note.routes');
 
-app.use((req, res, next) => {
-    if (req.session.currentUser) {
-        return next()
-    }
-    res.redirect('/auth/login')
-})
+// app.use((req, res, next) => {
+//     if (req.session.currentUser) {
+//         return next()
+//     }
+//     res.redirect('/auth/login')
+// })
 
-app.use('/', listRoutes);
+app.use('/lists', listRoutes);
 // app.use('/', noteRoutes);
 
 

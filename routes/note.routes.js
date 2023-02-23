@@ -11,7 +11,7 @@ router.post("/:listId/notes", (req, res) => {
     .then(async (note) => {
       const stuff = await List.findByIdAndUpdate(listId, { $push: { notes: note._id } }, { new: true })
       console.log(listId)
-      res.redirect('/')
+      res.redirect(`/lists/${listId}`)
     })
     .catch((error) => console.log(error));
 });
@@ -31,7 +31,7 @@ router.get("/:listId/notes/:noteId", (req, res) => {
 
       return Note.findById(req.params.noteId)
     })
-    .then((note) => render({ note }))
+    .then((note) => res.render("editNote", { note, listId: req.params.listId }))
     .catch((error) => console.log(error));
 });
 
@@ -44,11 +44,11 @@ router.post("/:listId/notes/:noteId", (req, res) => {
 
       return Note.findOneAndUpdate(
         { _id: req.params.noteId },
-        req.body,
+        { ...req.body, isUrgent: req.body.isUrgent ? true : false },
         { new: true }
       )
     })
-    .then((note) => render({ note }))
+    .then((note) => res.redirect(`/lists/${req.params.listId}`))
     .catch((error) => console.log(error));
 
 });

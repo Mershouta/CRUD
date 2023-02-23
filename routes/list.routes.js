@@ -9,7 +9,7 @@ router.post("/", (req, res) => {
 
 
   List.create({ title, description, owner })
-    .then((createdList) => res.redirect('/'))
+    .then((createdList) => res.redirect('/lists'))
     .catch((error) => console.log(error));
 });
 

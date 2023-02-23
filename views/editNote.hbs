@@ -1,0 +1,20 @@
+<form action="/lists/{{listId}}/notes/{{note._id}}" method="post">
+    <div>
+        <label for="title">Title: </label>
+        <input type="text" name="title" id="title" value="{{note.title}}">
+    </div>
+    <div>
+        <label for="content">Content: </label>
+        <input type="text" name="content" id="content" value="{{note.content}}">
+    </div>
+    <div>
+        <label for="isUrgent">Urgent? </label>
+        <input type="checkbox" name="isUrgent" id="isUrgent" {{#if note.isUrgent}} checked {{/if}}>
+    </div>
+    <div>
+        <label for="dueDate">Due date: </label>
+        <input type="date" name="dueDate" id="dueDate" value="{{note.dueDate}}">
+    </div>
+
+    <button>Update Note</button>
+</form>

@@ -37,12 +37,12 @@ const listRoutes = require('./routes/list.routes');
 const noteRoutes = require('./routes/note.routes');
 
 
-app.use((req, res, next) => {
-    if (req.session.currentUser) {
-        res.redirect('/lists')
-    }
-    return next()
-})
+// app.use((req, res, next) => {
+//     if (req.session.currentUser) {
+//         res.redirect('/lists')
+//     }
+//     return next()
+// })
 
 app.use('/lists', exposeUserInfo, listRoutes);
 // app.use('/', noteRoutes);

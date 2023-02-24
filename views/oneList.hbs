@@ -1,30 +1,42 @@
-<h1>{{list.title}}</h1>
-<p>{{list.description}}</p>
+<div id="oneList">
+    <h1>{{list.title}}</h1>
+    <p><span>Description: </span>{{list.description}}</p>
 
 
-<form action="{{list._id}}/notes" method="post">
-    <div>
-        <label for="title">Title: </label>
-        <input type="text" name="title" id="title">
-    </div>
-    <div>
-        <label for="content">Content: </label>
-        <input type="text" name="content" id="content">
-    </div>
-    <div>
-        <label for="isUrgent">Urgent? </label>
-        <input type="checkbox" name="isUrgent" id="isUrgent">
-    </div>
-    <div>
-        <label for="dueDate">Due date: </label>
-        <input type="date" name="dueDate" id="dueDate">
-    </div>
+    <form action="{{list._id}}/notes" method="post">
+        <div>
+            <label for="title">Title: </label>
+            <input type="text" name="title" id="title">
+        </div>
+        <div>
+            <label for="content">Content: </label>
+            <input type="text" name="content" id="content">
+        </div>
+        <div>
+            <label for="isUrgent">Urgent? </label>
+            <input type="checkbox" name="isUrgent" id="isUrgent">
+        </div>
+        <div>
+            <label for="dueDate">Due date: </label>
+            <input type="date" name="dueDate" id="dueDate">
+        </div>
 
-    <button>Create Note</button>
-</form>
+        <button>Create Note</button>
+    </form>
 
-<ul>
-    {{#each list.notes}}
-    <li><a href="/lists/{{@root.list._id}}/notes/{{_id}}">{{title}}: {{content}}</a></li>
-    {{/each}}
-</ul>
+    <ul>
+        {{#each list.notes}}
+        <li id="notes">
+            <a href="/lists/{{@root.list._id}}/notes/{{_id}}">
+                <h4>{{title}}</h4>
+                <form method="POST" action="/lists/{{@root.list._id}}/notes/{{_id}}/delete">
+                    <button type="submit">Delete</button>
+                </form>
+                <hr>
+                <p>{{content}}</p>
+                <p class="date">{{dueDate}}</p>
+            </a>
+        </li>
+        {{/each}}
+    </ul>
+</div>

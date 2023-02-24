@@ -1,14 +1,20 @@
-<form action="/lists" method="post">
-    <input type="text" name="title" placeholder="Note title">
-    <input type="text" name="description" placeholder="Description">
+<div id="listsForm">
+    <form action="/lists" method="post">
+        <input type="text" name="title" placeholder="Note title">
+        <input type="text" name="description" placeholder="Description">
 
-    <button>Create list</button>
+        <button>Create list</button>
 
-</form>
+    </form>
 
 
-<ul>
-    {{#each lists}}
-    <li><a href="/lists/{{_id}}">{{title}}</a></li>
-    {{/each}}
-</ul>
+    <ul class="lists">
+        {{#each lists}}
+        <li class="uneListe"><a href="/lists/{{_id}}">
+                <h3>{{title}}</h3>
+                <hr>
+                <p><span class="listDes">Description: </span>{{description}}</p>
+                </a></li>
+        {{/each}}
+    </ul>
+</div>

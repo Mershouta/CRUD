@@ -52,4 +52,13 @@ router.post("/:listId/notes/:noteId", (req, res) => {
     .catch((error) => console.log(error));
 
 });
+
+router.post('/:listId/notes/:noteId/delete', async (req, res) => {
+  console.log("DELETE review", req.params.noteId)
+  await Note.deleteOne({ _id: req.params.noteId })
+    .catch((err) => {
+      console.log(err.message);
+    })
+  res.redirect(`/lists/${req.params.listId.notes}`)
+})
 module.exports = router;

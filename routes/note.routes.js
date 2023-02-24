@@ -59,6 +59,6 @@ router.post('/:listId/notes/:noteId/delete', async (req, res) => {
     .catch((err) => {
       console.log(err.message);
     })
-  res.redirect(`/lists/${req.params.listId.notes}`)
+  res.redirect(`/lists/${req.params.listId}`)
 })
 module.exports = router;

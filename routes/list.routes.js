@@ -21,7 +21,9 @@ router.get("/", (req, res) => {
 
 router.get("/:listId", (req, res) => {
   const owner = req.session.currentUser._id
-
+  if (!req.params.listId) {
+    return res.redirect('/lists')
+  }
   List.findOne({ _id: req.params.listId, owner: req.session.currentUser._id }).populate('notes')
     .then((list) => res.render('oneList', { list }))
     .catch((error) => console.log(error));

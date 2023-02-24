@@ -22,9 +22,9 @@
 
     <button>Create Note</button>
 </form>
-<ul>
 
+<ul>
     {{#each list.notes}}
-    <li><a href="/lists/{{@root.list._id}}/notes/{{_id}}">{{title}}</a></li>
+    <li><a href="/lists/{{@root.list._id}}/notes/{{_id}}">{{title}}: {{content}}</a></li>
     {{/each}}
 </ul>
